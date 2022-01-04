@@ -12,11 +12,15 @@ export class CategoriesComponent implements OnInit {
 
   constructor(private dataHandler: DataHandlerService) {
     this.categories =[];
-   }
+   }  
 
   ngOnInit(): void {
   this.categories= this.dataHandler.getCategories();
-  console.log(this.categories);
+  }
+  showTasksByCategory(category: Category){
+    const tasks = this.dataHandler.getTasksByCategory(category);
+    console.log(tasks);
+    return tasks;
   }
 
 }
