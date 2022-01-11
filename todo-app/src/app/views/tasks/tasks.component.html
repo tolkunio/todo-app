@@ -19,7 +19,17 @@
                 <td>{{task.category?.title}}</td>
                 <td>{{task.priority?.title}}</td>
                 <td>{{task.date | date:'short'}}</td>
-                <td>{{task.isCompleted}}</td>
+                <td>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" 
+                             value="" [checked]="task.isCompleted">
+                            <span class="form-check-sign">
+                                <span class="check"></span>
+                            </span>
+                         </label>
+                    </div>
+                </td>
             </tr>
             </tbody>
         </table>
