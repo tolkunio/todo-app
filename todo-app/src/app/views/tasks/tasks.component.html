@@ -13,17 +13,18 @@
             <th>Статус</th>
             </thead>
             <tbody>
-            <tr *ngFor="let task of tasks let i = index">
-                <td>{{i+1}}</td>
-                <td>{{task.title}}</td>
-                <td>{{task.category?.title}}</td>
-                <td>{{task.priority?.title}}</td>
-                <td>{{task.date | date:'short'}}</td>
+            <tr *ngFor="let task of tasks let i = index" [class.completed]="task.isCompleted">
+                <td [class.novalue]="task.category===null">{{i+1}}</td>
+                <td [class.novalue]="task.category===null">{{task.title}}</td>
+                <td [class.novalue]="task.category===null">{{task.category?.title}}</td>
+                <td [class.novalue]="task.category===null">{{task.priority?.title}}</td>
+                <td [class.novalue]="task.category===null">{{task.date | date:'short'}}</td>
                 <td>
                     <div class="form-check">
                         <label class="form-check-label">
                             <input type="checkbox" class="form-check-input" 
-                             value="" [checked]="task.isCompleted">
+                             value="" [checked]="task.isCompleted"
+                             (click)="toggleTaskCompleted(task)">
                             <span class="form-check-sign">
                                 <span class="check"></span>
                             </span>
