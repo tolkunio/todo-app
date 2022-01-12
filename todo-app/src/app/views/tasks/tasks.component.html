@@ -3,36 +3,71 @@
         <h4 class="card-title">Список задач</h4>
     </div>
     <div class="card-body table-responsive">
-        <table class="table table-hover">
-            <thead class="text-warning">
-            <th>#</th>
-            <th>Название</th>
-            <th>Категория</th>
-            <th>Приоритет</th>
-            <th>Дата</th>
-            <th>Статус</th>
-            </thead>
-            <tbody>
-            <tr *ngFor="let task of tasks let i = index" [class.completed]="task.isCompleted">
-                <td [class.novalue]="task.category===null">{{i+1}}</td>
-                <td [class.novalue]="task.category===null">{{task.title}}</td>
-                <td [class.novalue]="task.category===null">{{task.category?.title}}</td>
-                <td [class.novalue]="task.category===null">{{task.priority?.title}}</td>
-                <td [class.novalue]="task.category===null">{{task.date | date:'short'}}</td>
-                <td>
-                    <div class="form-check">
-                        <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" 
-                             value="" [checked]="task.isCompleted"
-                             (click)="toggleTaskCompleted(task)">
-                            <span class="form-check-sign">
-                                <span class="check"></span>
-                            </span>
-                         </label>
-                    </div>
+        <table [dataSource]="dataSource" mat-table>
+            <!-- цвет приоритета -->
+            <ng-container matColumnDef="color">
+                <th *matHeaderCellDef mat-header-cell></th>
+                <td *matCellDef="let task"
+                     [style.background-color]="getPriorityColor(task)"
+                     mat-cell></td>
+            </ng-container>
+
+            <!-- нумерация -->
+            <ng-container matColumnDef="id">
+                <th *matHeaderCellDef mat-header-cell></th>\
+                <td *matCellDef="let index=index;" mat-cell>
+                    {{index+1}}
                 </td>
-            </tr>
-            </tbody>
+            </ng-container>
+
+            <!-- название -->
+            <ng-container matColumnDef="title">
+                <th *matHeaderCellDef mat-header-cell>Название</th>
+                <td *matCellDef="let task "[class.isCompleted]="task.isCompleted"
+                    mat-cell>
+                {{task.title}}
+                </td>
+            </ng-container>
+
+            <!-- категория -->
+            <ng-container matColumnDef="category">
+                <th *matHeaderCellDef  mat-header-cell>Категория</th>
+                <td *matCellDef="let task"
+                [ngClass]="{'completed':task.isCompleted,
+                            'nocategory':task.category==null}" mat-cell>
+                {{task.category?.title}}
+            </td>
+            </ng-container>
+
+            <!-- дата выполнения -->
+            <ng-container matColumnDef="date">
+                <th *matHeaderCellDef  mat-header-cell>Дата</th>
+                <td *matCellDef="let task"
+                    [ngClass]="{'completed':task.isCompleted,
+                                'nodate':task.date==null}" mat-cell>
+                    {{task.date |date:"medium" }}
+                </td>
+            </ng-container>
+
+            <!-- статус -->
+            <ng-container matColumnDef="status">
+                <th *matHeaderCellDef  mat-header-cell>Статус</th>
+                <td></td>
+            </ng-container>
+
+             <!-- приоритет -->
+             <ng-container matColumnDef="priority">
+                <th *matHeaderCellDef  mat-header-cell>Приоритет</th>
+                <td *matCellDef="let task"
+                    [ngClass]="{'completed':task.isCompleted,
+                                'nopriority':task.priority==null}" mat-cell>
+                    {{task.priority?.title}}
+                </td>
+            </ng-container>
+            <!-- заголовок таблицы -->
+            <tr *matHeaderRowDef="displayedColumns;" mat-header-row></tr>
+            <!-- строки таблицы - набор строк из тегов -->
+            <tr *matRowDef="let row; columns:displayedColumns;" mat-row></tr>
         </table>
     </div>
 </div>
